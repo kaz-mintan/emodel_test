@@ -28,18 +28,29 @@ class Decay:
 
     def decay(self, mental, emotion):
         x = np.linspace(0,1,100)
-        y = -self.a_mental(mental)*x
+        x_type = x>(self.st_x)/100.0
+        y = -self.a_mental(mental)*x*x_type.astype(np.int)
         return y 
 
 
+def test(a,b,c):
+    x=np.linspace(0,1,100)
+    x_type = x>c
+    notx_type = np.logical_not(x_type)
+    y=(-a*x+1+a*c)*(x_type.astype(np.int))+1*(notx_type.astype(np.int))
+    return y
+
 if __name__ == '__main__':
+    test(4,2,0.3)
+
+
+    x=np.linspace(0,1,100)
     func_a=Attack()
     y_a=func_a.attack(10,1)
 
     func_d=Decay()
     y_d=func_d.decay(10,1)
 
-    x=np.linspace(0,1,100)
     y=y_a*y_d
     plt.plot(x,y)
     plt.show()

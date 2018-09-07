@@ -3,7 +3,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-split=100.0
 
 def amp(mental, emotion):
     #ampritude of output of emotion on face and so on
@@ -45,10 +44,22 @@ def decay(x,mental,emotion):
     y = delta_d(mental)*x+amp(mental,emotion)-delta_d(mental)*x_s(mental)
     return section(x,y,x_s(mental),1)
 
+def estimated_s(split,array):
+    emotion, mental = array
+    x=np.linspace(0,1,split)
+
+    y_a=attack(x,mental,emotion)
+    y_s=sustain(x,mental,emotion)
+    y_d=decay(x,mental,emotion)
+
+    y = y_a+y_s+y_d
+    y_type=y>=0
+    return y*(y_type.astype(np.int))
 
 if __name__ == '__main__':
     mental = 4
     emotion = 10
+    split=10.0
 
     x=np.linspace(0,1,split)
 
@@ -56,6 +67,6 @@ if __name__ == '__main__':
     y_s=sustain(x,mental,emotion)
     y_d=decay(x,mental,emotion)
 
-    plt.plot(x,(y_a+y_s+y_d)/20.0)
-    plt.show()
+    #plt.plot(x,(y_a+y_s+y_d)/20.0)
+    #plt.show()
 
